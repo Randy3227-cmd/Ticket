@@ -1,0 +1,65 @@
+/* Thème d'élevage - Page d'erreur */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8e8d4;
+    color: #6b3e26;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Conteneur du message d'erreur */
+.erreur-details {
+    background: #ffddcc;
+    border: 2px solid #c44d34;
+    padding: 15px;
+    border-radius: 8px;
+    width: 50%;
+    margin: 20px auto;
+    font-size: 18px;
+    font-weight: bold;
+    color: #8b2f19;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Titre */
+h2 {
+    color: #a03a27;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Actions - Liens */
+.actions {
+    margin-top: 20px;
+}
+
+.actions a {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+/* Bouton Déposer de l'argent */
+.actions a[href="/depotArgent"] {
+    background-color: #7a5c3e;
+    color: white;
+}
+
+.actions a[href="/depotArgent"]:hover {
+    background-color: #5c472f;
+    transform: scale(1.05);
+}
+
+/* Bouton Retour à la liste */
+.actions a[href="/listAlimentation"] {
+    background-color: #c44d34;
+    color: white;
+}
+
+.actions a[href="/listAlimentation"]:hover {
+    background-color: #a03a27;
+    transform: scale(1.05);
+}

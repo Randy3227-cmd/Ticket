@@ -1,0 +1,60 @@
+/* Thème d'élevage - Page Ajouter du Capital */
+body {
+    font-family: "Arial", sans-serif;
+    background-color: #f8e8d4;
+    color: #6b3e26;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Conteneur principal */
+.container {
+    background: #fff5e1;
+    border: 2px solid #a37447;
+    padding: 20px;
+    border-radius: 10px;
+    width: 40%;
+    margin: 20px auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Titre */
+h2 {
+    color: #a03a27;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Champ du formulaire */
+label {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+input {
+    width: 80%;
+    padding: 8px;
+    border: 1px solid #a37447;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+/* Bouton Ajouter */
+button {
+    background-color: #7a5c3e;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #5c472f;
+    transform: scale(1.05);
+}

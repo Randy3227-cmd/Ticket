@@ -1,0 +1,99 @@
+/* Thème d'élevage - Validation d'achat */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f1e8;
+    color: #4b3b26;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Conteneur principal */
+.container {
+    background: white;
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Titre */
+h2 {
+    color: #7a5c3e;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+/* Image du produit */
+.container img {
+    width: 120px;
+    height: 120px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+/* Informations du produit */
+p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+/* Formulaire */
+form {
+    margin-top: 15px;
+}
+
+/* Label */
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Input quantité */
+input[type="number"] {
+    width: 80px;
+    padding: 5px;
+    font-size: 16px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Bouton de validation */
+button {
+    background-color: #7a5c3e;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #5c472f;
+    transform: scale(1.05);
+}
+
+/* Bouton annuler */
+a {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 15px;
+    background-color: #c44d34;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+a:hover {
+    background-color: #a03a27;
+    transform: scale(1.05);
+}

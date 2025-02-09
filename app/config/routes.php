@@ -1,39 +1,45 @@
 <?php
 
-use app\controllers\LoginController;
-use app\controllers\SignController;
-use app\controllers\FormulaireController;
-use app\controllers\AjouterPanierController;
-use \app\controllers\TousLesProduitsController;
-use \app\controllers\TousLesProduitsModel;
 use app\controllers\ModifierController;
 use app\controllers\DepotController;
 use app\controllers\AdminController;
+use app\controllers\SituationController;
+use app\controllers\ListerAnimauxController;
+use app\controllers\StockAnimauxController;
+use app\controllers\AnimauxAcheteController;
+use app\controllers\ReinitialiserController;
+use app\controllers\ArgentController;
+use app\controllers\AlimentationController;
 use flight\Engine;
 use flight\net\Router;
+$situationController = new SituationController();
+$listerAnimauxController = new ListerAnimauxController();
+$stock_animauxController = new StockAnimauxController();
+$animaux_acheteController = new AnimauxAcheteController();
+$reinitialiser_Controller = new ReinitialiserController();
+$argent = new ArgentController();
+$alimentation = new AlimentationController();
 
-//use Flight;
-$loginController = new LoginController();
-$SignController = new SignController();
-$formulaireController = new FormulaireController();
-$ajouterPanierController = new AjouterPanierController();
-$tousLesProduitsController = new TousLesProduitsController();
-$modifierController = new ModifierController();
-$depotController = new DepotController();
-$adminController = new AdminController();
+// Route pour afficher la page principale
+$router->get('/',[$listerAnimauxController, 'getAllAnimaux']);
+$router->get('situation',[$situationController, 'getAnimauxAchete']);
+$router->get('/situation',[$situationController, 'getAllAnimaux']);
+$router->get('/situation', function () {
+    include __DIR__ . '/../views/situation.php'; // Charge la vue correctement
+});
 
-$router->get('/', [$tousLesProduitsController, 'getProduits']);
-$router->get('/login',[$loginController, 'welcome']);
-$router->get('/sign', [ $SignController, 'welcome' ]);
-$router->get('/LoginController', [ $loginController, 'checkLogin' ]);
-$router->get('/SignController', [ $SignController, 'insertUser' ]);
-$router->get('/FormulaireController', [$formulaireController, 'checkFormulaire']);
-$router->get('/AjouterPanierController', [$ajouterPanierController,'check']);
-$router->get('/ModifierController', [ $modifierController, 'check']);
-$router->get('/formulaire', [ $formulaireController, 'afficherFormulaire' ]);
-$router->get('/DepotController', [ $depotController, 'updateMoney' ]);
-$router->get('/DepotController1', [ $depotController, 'insertDepot' ]);
-$router->get('/admin', [ $adminController, 'listDepot' ]);
-$router->get('/depot', [$ajouterPanierController,'payerParDepot']);
-$router->get('/Ajouter', [$adminController,'insertCadeau']);
-?>
+// Route pour recevoir la requête AJAX
+$router->post('/situation/getPoidsActuel', [$situationController, 'getPoidsActuel']);
+$router->get('/stock', [$stock_animauxController, 'getStock']);
+$router->post('/acheter', [$stock_animauxController, 'acheterAnimal']);
+$router->get('/achetes', [$animaux_acheteController, 'getAchats']);
+$router->post('/reinitialiser', [$reinitialiser_Controller, 'reinitialiserProjet']);
+$router->post('/vendre', [$stock_animauxController, 'vendreAnimal']);
+
+$router->get('/argent',[$argent, 'showMontant']);
+$router->post('/depotArgent',[$argent, 'depotArgent']);
+$router->get('/depotArgent',[$argent, 'afficherFormulaire']);
+$router->get('/listAlimentation',[$alimentation, 'listAlimentations']);
+$router->get('/achatAlimentationFormulaire',[$alimentation, 'afficherFormulaireAchat']);
+$router->get('/alimentation',[$alimentation, 'validerAchat']);
+$router->get('/alimentationAcheter',[$alimentation, 'afficherAchats']);
