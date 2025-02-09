@@ -1,8 +1,5 @@
 <?php
 
-use app\controllers\ModifierController;
-use app\controllers\DepotController;
-use app\controllers\AdminController;
 use app\controllers\SituationController;
 use app\controllers\ListerAnimauxController;
 use app\controllers\StockAnimauxController;
