@@ -45,8 +45,7 @@
                                 data-statut="<?= $ticket['fk_statut'] ?>">
                             🖋️Modifier</button>
                         <?php elseif ($ticket['fk_statut'] == 5): ?>
-                            <form action="ticket/ajouter_paiement" method="post" style="display: flex; gap: 5px; align-items: center;">
-                                <input type="hidden" name="ticket_id" value="<?= $ticket['id'] ?>">
+                            <form class="realisation-form" style="display: flex; gap: 5px;">
                                 <input type="number" name="montant" placeholder="Montant (Ar)" step="0.01" min="0" required style="width: 100px;">
                                 <button type="submit" class="btn-edit">💰</button>
                             </form>
@@ -133,6 +132,32 @@ document.getElementById('edit-form').addEventListener('submit', function(e) {
           }
       });
 });
+
+document.querySelectorAll('.realisation-form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+
+        fetch('realisation/ajouter_realisation', {
+            method: 'POST',
+            body: new URLSearchParams(formData)
+        })
+        .then(r => r.json())
+        .then(res => {
+            if (res.success) {
+                alert(res.message);
+                location.reload(); 
+            } else {
+                alert('Erreur: ' + res.error);
+            }
+        })
+        .catch(err => {
+            alert('Erreur réseau');
+            console.error(err);
+        });
+    });
+});
+
 </script>
 
 </body>

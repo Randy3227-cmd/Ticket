@@ -10,6 +10,7 @@ use app\controllers\AdminController;
 use app\controllers\DiscussionController;
 
 use app\controllers\EvaluationController;
+use app\controllers\RealisationController;
 
 $clientController = new ClientController();
 $demandeTicketController = new DemandeTicketController();
@@ -17,6 +18,7 @@ $adminController = new AdminController();
 $ticketController = new TicketController();
 $discussionController = new DiscussionController();
 $evaluationController = new EvaluationController();
+$realisationController = new RealisationController();
 
 $router->get('/', [$adminController, 'accueil']);
 $router->get('/login', [$clientController, 'login']);
@@ -47,3 +49,5 @@ $router->get('/messageClient/@id', [$discussionController, 'getMessageByClientId
 
 $router->post('/ticket/update', [$ticketController, 'update']);
 $router->post('/ticket/evaluation', [$evaluationController, 'evaluate']);
+
+$router->post('/realisation/ajouter_realisation', [$realisationController, 'ajouter_realisation']);
