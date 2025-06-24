@@ -37,7 +37,8 @@ CREATE TABLE notes(
     id_client INT NOT NULL,
     id_agent INT NOT NULL,
     note INT CHECK (note >= 1 AND note <= 5),
-    date_note DATE NOT NULL,
+    date_note DATETIME NOT NULL,
+    commentaires TEXT,
     FOREIGN KEY (id_client) REFERENCES client(id_client),
     FOREIGN KEY (id_agent) REFERENCES agent(id_agent)
 );

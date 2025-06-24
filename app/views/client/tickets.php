@@ -35,17 +35,21 @@
                             </td>
                             <td><?= htmlspecialchars($statut[$ticket['fk_statut']]) ?></td>
                             <td>
-                            <?php if (strtolower($statut[$ticket['fk_statut']]) === 'résolu'): ?>
-                                <div class="evaluation" 
-                                    data-id="<?= $ticket['id'] ?>" 
-                                    data-client="<?= $_SESSION['id_client'] ?>" 
-                                    data-agent="<?= $ticket['array_options']['options_agentid_external'] ?>">
-                                    <span>Évaluez :</span>
-                                    <?php for ($i = 1; $i <= 5; $i++): ?>
-                                        <span class="star" data-note="<?= $i ?>">★</span>
-                                    <?php endfor; ?>
-                                </div>
-                            <?php endif; ?>
+                                <?php if (strtolower($statut[$ticket['fk_statut']]) === 'résolu'): ?>
+                                    <div class="evaluation" 
+                                        data-id="<?= $ticket['id'] ?>" 
+                                        data-client="<?= $_SESSION['id_client'] ?>" 
+                                        data-agent="<?= $ticket['array_options']['options_agentid_external'] ?>">
+                                        <span>Évaluez :</span>
+                                        <?php for ($i = 1; $i <= 5; $i++): ?>
+                                            <span class="star" data-note="<?= $i ?>">★</span>
+                                        <?php endfor; ?>
+                                        <div class="commentaire" style="display:none; margin-top: 10px;">
+                                            <textarea class="comment-text" placeholder="Laissez un commentaire..."></textarea><br>
+                                            <button class="btn-comment">Envoyer le commentaire</button>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endif; ?>
@@ -62,7 +66,6 @@ document.querySelectorAll('.evaluation').forEach(container => {
     let selectedNote = 0;
 
     stars.forEach(star => {
-        // Survol
         star.addEventListener('mouseover', () => {
             const note = parseInt(star.dataset.note);
             stars.forEach(s => {
@@ -70,38 +73,45 @@ document.querySelectorAll('.evaluation').forEach(container => {
             });
         });
 
-        // Quitte la souris
         star.addEventListener('mouseout', () => {
             stars.forEach(s => s.classList.remove('hover'));
         });
 
-        // Clic
         star.addEventListener('click', () => {
             selectedNote = parseInt(star.dataset.note);
-            const id = container.dataset.id;
+            const id_client = container.dataset.client;
+            const id_agent = container.dataset.agent;
 
-            // Afficher étoiles sélectionnées
             stars.forEach(s => {
                 s.classList.toggle('selected', parseInt(s.dataset.note) <= selectedNote);
             });
 
-            // Envoi au serveur
-            const id_client = container.dataset.client;
-            const id_agent = container.dataset.agent;
+            const commentBox = container.querySelector('.commentaire');
+            commentBox.style.display = 'block';
 
-            fetch('/ticket/evaluation', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body: `id_client=${id_client}&id_agent=${id_agent}&note=${selectedNote}`
-            })
-            .then(r => r.json())
-            .then(res => {
-                if (res.success) alert('Merci pour votre évaluation !');
-                else alert(res.error || 'Erreur');
-            });
+            const commentBtn = commentBox.querySelector('.btn-comment');
+            commentBtn.addEventListener('click', () => {
+                const commentaire = commentBox.querySelector('.comment-text').value;
+
+                fetch('/ticket/evaluation', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: `id_client=${id_client}&id_agent=${id_agent}&note=${selectedNote}&commentaire=${encodeURIComponent(commentaire)}`
+                })
+                .then(r => r.json())
+                .then(res => {
+                    if (res.success) {
+                        alert('Merci pour votre évaluation !');
+                        commentBox.style.display = 'none';
+                    } else {
+                        alert(res.error || 'Erreur lors de l’envoi.');
+                    }
+                });
+            }, { once: true }); // évite doublons
         });
     });
 });
+
 </script>
 
 
@@ -164,4 +174,11 @@ document.querySelectorAll('.evaluation').forEach(container => {
     color: #e74c3c;
     font-weight: bold;
 }
+.commentaire textarea {
+    width: 100%;
+    height: 60px;
+    padding: 5px;
+    resize: vertical;
+}
+
 </style>
