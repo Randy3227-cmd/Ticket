@@ -37,18 +37,23 @@
                                 ?>
                             </td>
                             <td><?= htmlspecialchars($statut[$ticket['fk_statut']]) ?></td>
-                            <td>
-                                <?php if ($ticket['fk_statut'] != 5 && $ticket['fk_statut'] != 6): ?>
-                                    <button class="btn-open-edit"
-                                        data-id="<?= $ticket['id'] ?>"
-                                        data-subject="<?= htmlspecialchars($ticket['subject'], ENT_QUOTES) ?>"
-                                        data-message="<?= htmlspecialchars($ticket['message'], ENT_QUOTES) ?>"
-                                        data-statut="<?= $ticket['fk_statut'] ?>">
-                                    🖋️Modifier</button>
-                                <?php else: ?>
-                                    <span style="color: gray;">Fermé</span>
-                                <?php endif; ?>
-                            </td>
+                            <td><?php if ($ticket['fk_statut'] != 5 && $ticket['fk_statut'] != 6): ?>
+                            <button class="btn-open-edit"
+                                data-id="<?= $ticket['id'] ?>"
+                                data-subject="<?= htmlspecialchars($ticket['subject'], ENT_QUOTES) ?>"
+                                data-message="<?= htmlspecialchars($ticket['message'], ENT_QUOTES) ?>"
+                                data-statut="<?= $ticket['fk_statut'] ?>">
+                            🖋️Modifier</button>
+                        <?php elseif ($ticket['fk_statut'] == 5): ?>
+                            <form action="ticket/ajouter_paiement" method="post" style="display: flex; gap: 5px; align-items: center;">
+                                <input type="hidden" name="ticket_id" value="<?= $ticket['id'] ?>">
+                                <input type="number" name="montant" placeholder="Montant (Ar)" step="0.01" min="0" required style="width: 100px;">
+                                <button type="submit" class="btn-edit">💰</button>
+                            </form>
+                        <?php else: ?>
+                            <span style="color: gray;">Fermé</span>
+                        <?php endif; ?>
+                        </td>
                         </tr>
                     <?php endif; ?>
                 <?php endforeach; ?>

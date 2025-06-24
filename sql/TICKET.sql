@@ -26,6 +26,7 @@ CREATE TABLE demande_ticket(
     sujet VARCHAR(50) NOT NULL,
     message TEXT,
     status INT NOT NULL DEFAULT 0,
+    fichier VARCHAR(255),
     FOREIGN KEY (id_client) REFERENCES client(id_client)
 );
 

@@ -1,5 +1,12 @@
 <div class="container">
     <h1>Demandes</h1>
+    <?php if(isset($_GET['error'])): ?>
+        <p class="alert alert-error"><?= htmlspecialchars($_GET['error']) ?></p>
+    <?php endif; ?>
+
+    <?php if(isset($_GET['success'])): ?>
+        <p class="alert alert-success"><?= htmlspecialchars($_GET['success']) ?></p>
+    <?php endif; ?>
     <?php if (!empty($demandes) && is_array($demandes)): ?>
     <table class="table">
         <thead>
@@ -106,5 +113,22 @@
     color: #e74c3c;
     font-weight: bold;
     margin-top: 20px;
+}
+.alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #a94442;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
 }
 </style>

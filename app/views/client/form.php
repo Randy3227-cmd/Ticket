@@ -1,14 +1,14 @@
 <div class="form-wrapper">
-    <?php 
-        if (isset($_GET['error'])) {
-            echo '<p class="alert alert-error">' . htmlspecialchars($_GET['error']) . '</p>';
-        }
-        if (isset($_GET['success'])) {
-            echo '<p class="alert alert-success">' . htmlspecialchars($_GET['success']) . '</p>';
-        }
+    <?php
+    if (isset($_GET['error'])) {
+        echo '<p class="alert alert-error">' . htmlspecialchars($_GET['error']) . '</p>';
+    }
+    if (isset($_GET['success'])) {
+        echo '<p class="alert alert-success">' . htmlspecialchars($_GET['success']) . '</p>';
+    }
     ?>
     <h2>Créer une Demande de Ticket</h2>
-    <form action="<?= BASE_URL ?>/client/demandes/create" method="post">
+    <form action="<?= BASE_URL ?>/client/demandes/create" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="sujet">Sujet :</label>
             <input type="text" id="sujet" name="sujet" required>
@@ -16,6 +16,10 @@
         <div class="form-group">
             <label for="message">Message :</label>
             <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="fichier">Joindre un fichier :</label>
+            <input type="file" id="fichier" name="fichier">
         </div>
         <button type="submit" class="submit-btn">Envoyer la Demande</button>
     </form>
@@ -28,7 +32,7 @@
         background: #fff;
         padding: 30px;
         border-radius: 8px;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         font-family: 'Segoe UI', sans-serif;
         color: #2c3e50;
     }
