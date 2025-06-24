@@ -12,7 +12,7 @@
                     <th>Priorité</th>
                     <th>Type</th>
                     <th>Catégorie</th>
-                    <th>Agent Responsable</th>
+                    <th>Client</th>
                     <th>Statut</th>
                     <th>Modifier</th>
                 </tr>
@@ -30,10 +30,10 @@
                             <td><?= htmlspecialchars($ticket['category_label']) ?></td>
                             <td>
                                 <?php
-                                $agent = array_filter($agents, function($a) use ($ticket) {
-                                    return $a['id_agent'] == $ticket['array_options']['options_agentid_external'];
+                                $client = array_filter($clients, function($c) use ($ticket) {
+                                    return $c['id_client'] == $ticket['array_options']['options_userid_external'];
                                 });
-                                echo !empty($agent) ? htmlspecialchars(reset($agent)['nom_agent']) : 'Inconnu';
+                                echo !empty($client) ? htmlspecialchars(reset($client)['nom_client']) : 'Inconnu';
                                 ?>
                             </td>
                             <td><?= htmlspecialchars($statut[$ticket['fk_statut']]) ?></td>
