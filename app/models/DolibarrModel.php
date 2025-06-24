@@ -8,8 +8,10 @@ use Flight;
 class DolibarrModel
 {
     private $apiUrl = 'http://localhost/dolibarr-21.0.1/htdocs/api/index.php/';
-    private $apiKey = '3d8VLS2o0PLypI8OA9vkG0a1zY65Miwf'; // Remplace par ton vrai token
 
+    // private $apiKey = '3d8VLS2o0PLypI8OA9vkG0a1zY65Miwf'; // Randy
+        
+    private $apiKey = 'el6cv75Sz0jSP3Gps9m4B07gfHEDF6TJ'; // Michou
     public function __construct()
     {
     }
