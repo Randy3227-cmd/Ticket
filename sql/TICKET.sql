@@ -61,3 +61,12 @@ CREATE TABLE notes(
 
 
 
+INSERT INTO demande_ticket (id_client, sujet, message, status) VALUES
+(1, 'Problème de connexion', 'Je narrive pas à me connecter à mon compte.', 0),
+(2, 'Facturation', 'Je pense avoir été facturé deux fois.', 1),
+(3, 'Demande dinformation', 'Je souhaite connaître les horaires.', 0);
+
+INSERT INTO Discussion (id_client, id_agent, date_creation, messages) VALUES
+(1, 1, '2025-06-24 10:00:00', 'Bonjour, j ai un problème de mot de passe.'),
+(2, 2, '2025-06-24 10:15:00', 'Merci pour votre réponse rapide !'),
+(3, NULL, '2025-06-24 11:00:00', 'J attends qu un agent prenne en charge ma demande.');

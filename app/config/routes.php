@@ -11,12 +11,15 @@ use app\controllers\DiscussionController;
 
 use app\controllers\EvaluationController;
 
+use app\controllers\DashboardController;
+
 $clientController = new ClientController();
 $demandeTicketController = new DemandeTicketController();
 $adminController = new AdminController();
 $ticketController = new TicketController();
 $discussionController = new DiscussionController();
 $evaluationController = new EvaluationController();
+$dashboardController = new DashboardController();
 
 $router->get('/', [$adminController, 'accueil']);
 $router->get('/login', [$clientController, 'login']);
@@ -47,3 +50,5 @@ $router->get('/messageClient/@id', [$discussionController, 'getMessageByClientId
 
 $router->post('/ticket/update', [$ticketController, 'update']);
 $router->post('/ticket/evaluation', [$evaluationController, 'evaluate']);
+
+$router->get('/admin/dashboard', [$dashboardController, 'showDashboard']);
