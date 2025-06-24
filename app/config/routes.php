@@ -9,11 +9,14 @@ use app\controllers\DemandeTicketController;
 use app\controllers\AdminController;
 use app\controllers\DiscussionController;
 
+use app\controllers\EvaluationController;
+
 $clientController = new ClientController();
 $demandeTicketController = new DemandeTicketController();
 $adminController = new AdminController();
 $ticketController = new TicketController();
 $discussionController = new DiscussionController();
+$evaluationController = new EvaluationController();
 
 $router->get('/', [$adminController, 'accueil']);
 $router->get('/login', [$clientController, 'login']);
@@ -43,3 +46,4 @@ $router->post('/sendMessageToClient/@id', [$discussionController, 'sendMessageTo
 $router->get('/messageClient/@id', [$discussionController, 'getMessageByClientId']);
 
 $router->post('/ticket/update', [$ticketController, 'update']);
+$router->post('/ticket/evaluation', [$evaluationController, 'evaluate']);

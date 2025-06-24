@@ -34,6 +34,19 @@
                                 ?>
                             </td>
                             <td><?= htmlspecialchars($statut[$ticket['fk_statut']]) ?></td>
+                            <td>
+                            <?php if (strtolower($statut[$ticket['fk_statut']]) === 'résolu'): ?>
+                                <div class="evaluation" 
+                                    data-id="<?= $ticket['id'] ?>" 
+                                    data-client="<?= $_SESSION['id_client'] ?>" 
+                                    data-agent="<?= $ticket['array_options']['options_agentid_external'] ?>">
+                                    <span>Évaluez :</span>
+                                    <?php for ($i = 1; $i <= 5; $i++): ?>
+                                        <span class="star" data-note="<?= $i ?>">★</span>
+                                    <?php endfor; ?>
+                                </div>
+                            <?php endif; ?>
+                            </td>
                         </tr>
                     <?php endif; ?>
                 <?php endforeach; ?>
@@ -43,8 +56,66 @@
         <p class="no-ticket">Aucun ticket trouvé ou erreur de chargement.</p>
     <?php endif; ?>
 </div>
+<script>
+document.querySelectorAll('.evaluation').forEach(container => {
+    const stars = container.querySelectorAll('.star');
+    let selectedNote = 0;
+
+    stars.forEach(star => {
+        // Survol
+        star.addEventListener('mouseover', () => {
+            const note = parseInt(star.dataset.note);
+            stars.forEach(s => {
+                s.classList.toggle('hover', parseInt(s.dataset.note) <= note);
+            });
+        });
+
+        // Quitte la souris
+        star.addEventListener('mouseout', () => {
+            stars.forEach(s => s.classList.remove('hover'));
+        });
+
+        // Clic
+        star.addEventListener('click', () => {
+            selectedNote = parseInt(star.dataset.note);
+            const id = container.dataset.id;
+
+            // Afficher étoiles sélectionnées
+            stars.forEach(s => {
+                s.classList.toggle('selected', parseInt(s.dataset.note) <= selectedNote);
+            });
+
+            // Envoi au serveur
+            const id_client = container.dataset.client;
+            const id_agent = container.dataset.agent;
+
+            fetch('/ticket/evaluation', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: `id_client=${id_client}&id_agent=${id_agent}&note=${selectedNote}`
+            })
+            .then(r => r.json())
+            .then(res => {
+                if (res.success) alert('Merci pour votre évaluation !');
+                else alert(res.error || 'Erreur');
+            });
+        });
+    });
+});
+</script>
+
 
 <style>
+.star {
+    font-size: 24px;
+    color: #ccc;
+    cursor: pointer;
+}
+.star.selected,
+.star.hover {
+    color: gold;
+}
+
 .ticket-container {
     max-width: 1200px;
     margin: 40px auto;
