@@ -89,6 +89,7 @@
             <li><a href="<?= BASE_URL ?>">🏠 Accueil</a></li>
             <li><a href="<?= BASE_URL ?>/admin/demandes">📄 Demandes</a></li>
             <li><a href="<?= BASE_URL ?>/admin/tickets">🎫 Tickets</a></li>
+            <li><a href="<?= BASE_URL ?>/admin/dashboard">🗃️ Dashboard</a></li>
         </ul>
     </nav>
 
