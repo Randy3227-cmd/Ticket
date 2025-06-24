@@ -151,14 +151,17 @@ class TicketController
 
         try {
             $success = $dolibarrModel->createDolibarrTicket($ticketData);
-            $success1 = $demandeTicketModel->updateStatus($id_demande);
-            if ($success && $success1) {
-                Flight::redirect('create?success=Ticket créé avec succès');
+            if (isset($success['error'])) {
+                throw new Exception($success['error']);
+            }
+            $success1 = $demandeTicketModel->updateStatus($id_demande, $success['ticket_id']);
+            if ($success1) {
+                Flight::redirect(BASE_URL . '?success=Ticket créé avec succès');
             } else {
-                Flight::redirect('create?error=Erreur lors de la création du ticket');
+                Flight::redirect(BASE_URL . '?error=Erreur lors de la création du ticket');
             }
         } catch (Exception $e) {
-            Flight::redirect('create?error=' . urlencode($e->getMessage()));
+            Flight::redirect(BASE_URL . '?error=' . urlencode($e->getMessage()));
         }
     }
 
@@ -167,12 +170,12 @@ class TicketController
         $id = Flight::request()->query['id'] ?? null;
 
         if (empty($id)) {
-            Flight::redirect('create?error=ID de la demande manquant');
+            Flight::redirect(BASE_URL . '?error=ID de la demande manquant');
             return;
         }
 
         $demandeTicketModel = new DemandeTicketModel(Flight::db());
-        $success = $demandeTicketModel->updateStatus($id);
+        $success = $demandeTicketModel->refuse($id);
 
         if ($success) {
             Flight::redirect(BASE_URL . '/admin/demandes?success=Demande refusée avec succès');
@@ -199,7 +202,7 @@ class TicketController
             'message' => $message,
             'status' => $fk_statut
         ]);
-        
+
         if (isset($result['error'])) {
             echo json_encode(['success' => false, 'error' => $result['error']]);
         } else {

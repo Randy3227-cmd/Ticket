@@ -48,6 +48,17 @@ $router->post('/sendMessageToClient/@id', [$discussionController, 'sendMessageTo
 $router->get('/messageClient/@id', [$discussionController, 'getMessageByClientId']);
 
 $router->post('/ticket/update', [$ticketController, 'update']);
-$router->post('/ticket/evaluation', [$evaluationController, 'evaluate']);
-
 $router->post('/realisation/ajouter_realisation', [$realisationController, 'ajouter_realisation']);
+
+
+
+
+
+
+
+
+
+
+
+
+$router->post('/ticket/evaluation', [$evaluationController, 'evaluate']);

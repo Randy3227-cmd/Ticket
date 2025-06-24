@@ -5,13 +5,16 @@ use app\models\DemandeTicketModel;
 use Exception;
 use Flight;
 
-class DemandeTicketController {
+class DemandeTicketController
+{
 
-    public function __construct() {
-        
+    public function __construct()
+    {
+
     }
 
-    public function findAll() {
+    public function findAll()
+    {
         $demandeTicketModel = new DemandeTicketModel(Flight::db());
         $demandes = $demandeTicketModel->findAll();
 
@@ -27,7 +30,8 @@ class DemandeTicketController {
         Flight::render('admin/template.php', $data);
     }
 
-    public function findAllById() {
+    public function findAllById()
+    {
         $demandeTicketModel = new DemandeTicketModel(Flight::db());
         $demandes = $demandeTicketModel->findAllById();
 
@@ -43,9 +47,9 @@ class DemandeTicketController {
         Flight::render('client/template.php', $data);
     }
 
-    public function create() {
+    public function create()
+    {
         $data = Flight::request()->data;
-
         $id_client = Flight::session('id_client');
         $sujet = $data['sujet'] ?? null;
         $message = $data['message'] ?? null;
@@ -56,10 +60,26 @@ class DemandeTicketController {
             return;
         }
 
+        // Gestion du fichier
+        $filePath = null;
+        if (!empty($_FILES['fichier']['name'])) {
+            $uploadDir = __DIR__ . '/../../uploads/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+            $fileName = uniqid() . '_' . basename($_FILES['fichier']['name']);
+            $filePath = $uploadDir . $fileName;
+            if (!move_uploaded_file($_FILES['fichier']['tmp_name'], $filePath)) {
+                Flight::redirect('create_demande?error=Erreur lors de l\'upload du fichier');
+                return;
+            }
+            $filePath = 'uploads/' . $fileName;
+        }
+
         $demandeTicketModel = new DemandeTicketModel(Flight::db());
 
         try {
-            $success = $demandeTicketModel->save($sujet, $message);
+            $success = $demandeTicketModel->save($sujet, $message, $filePath);
             if ($success) {
                 Flight::redirect('create?success=Demande créée avec succès');
             } else {
@@ -70,7 +90,8 @@ class DemandeTicketController {
         }
     }
 
-    public function form() {
+    public function form()
+    {
         // Vérification si l'utilisateur est connecté
         if (!Flight::session('id_client')) {
             Flight::redirect('login?error=Veuillez vous connecter pour créer une demande');
