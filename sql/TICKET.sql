@@ -1,3 +1,18 @@
+CREATE TABLE categorie_client(
+    id_categorie_client INT PRIMARY KEY AUTO_INCREMENT,
+    nom_categorie_client VARCHAR(50),
+    age VARCHAR(50) NOT NULL
+    -- FOREIGN KEY (id_categorie_client) REFERENCES categorie_client(id_categorie_client)
+);
+
+CREATE TABLE client(
+    id_client INT PRIMARY KEY AUTO_INCREMENT,
+    nom_client VARCHAR(50) NOT NULL,
+    genre VARCHAR(50) NOT NULL,
+    id_categorie_client INT NOT NULL
+    -- FOREIGN KEY (id_categorie_client) REFERENCES categorie_client(id_categorie_client)
+);
+
 CREATE TABLE agent(
     id_agent INT PRIMARY KEY AUTO_INCREMENT,
     nom_agent VARCHAR(50) NOT NULL,
@@ -23,15 +38,6 @@ CREATE TABLE Discussion(
     FOREIGN KEY (id_client) REFERENCES client(id_client)
 );
 
-
-/*Mbola tsy ao*/
-CREATE TABLE commentaires(
-    id_commentaire INT PRIMARY KEY AUTO_INCREMENT,
-    id_ticket INT NOT NULL,
-    contenu TEXT NOT NULL,
-    date_commentaire DATE NOT NULL
-);
-
 CREATE TABLE notes(
     id_note INT PRIMARY KEY AUTO_INCREMENT,
     id_client INT NOT NULL,
@@ -42,5 +48,16 @@ CREATE TABLE notes(
     FOREIGN KEY (id_client) REFERENCES client(id_client),
     FOREIGN KEY (id_agent) REFERENCES agent(id_agent)
 );
+
+
+
+/*Mbola tsy ao*/
+-- CREATE TABLE commentaires(
+--     id_commentaire INT PRIMARY KEY AUTO_INCREMENT,
+--     id_ticket INT NOT NULL,
+--     contenu TEXT NOT NULL,
+--     date_commentaire DATE NOT NULL
+-- );
+
 
 
