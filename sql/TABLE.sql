@@ -1,46 +1,54 @@
 -- Création des tables
-CREATE TABLE Alimentation (
-    idAlimentation INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    idAnimaux INT(11) NOT NULL,
-    pourcentageGain DECIMAL(10,2) NOT NULL,
-    aliment VARCHAR(255) NOT NULL,
-    prix INT(11) NOT NULL,
-    imageAlimentation varchar(200)
+
+CREATE TABLE Departement(
+    idDepartement INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    departement VARCHAR(255)
 );
 
-CREATE TABLE AchatAlimentation (
-    idAchat INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    idAlimentation INT(11) NOT NULL,
-    quantite INT(11) NOT NULL,
-    dateAchat date,
-    FOREIGN KEY (idAlimentation) REFERENCES Alimentation(idAlimentation)
+CREATE TABLE Categorie (
+    idCategorie INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    categorieName VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE Animaux (
-    idAnimaux INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    animal VARCHAR(255) NOT NULL,
-    poidsMin DECIMAL(10,2) NOT NULL,
-    poidsMax DECIMAL(10,2) NOT NULL,
-    prixVenteParKg INT(11) NOT NULL,
-    nbJourSansMangerAvantMourir INT(11) NOT NULL,
-    pourcentagePertePoidsParJour DECIMAL(10,2) NOT NULL,
-    poidsInitial DECIMAL(10,2) NOT NULL,
-    imageAnimaux varchar(200)
+CREATE TABLE Type (
+    idType INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    typeName VARCHAR(255) NOT NULL,
+    idCategorie INT(11) REFERENCES Categorie(idCategorie)
 );
 
-CREATE TABLE animauxAchete (
-    idAnimauxAchete INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    idAnimaux INT(11) NOT NULL,
-    dateAchat date,
-    FOREIGN KEY (idAnimaux) REFERENCES Animaux(idAnimaux)
+CREATE TABLE SoldeDebut (
+    idSolde INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    dateSolde date, 
+    valeur INT,
+    idDepartement INT REFERENCES Departement(idDepartement)
 );
 
-CREATE TABLE StockAnimaux (
-    idStock INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    idAnimaux INT(11) NOT NULL,
-    FOREIGN KEY (idAnimaux) REFERENCES Animaux(idAnimaux)
+CREATE TABLE Rubrique (
+    idRubrique INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    rubrique VARCHAR(255)
 );
 
-CREATE TABLE Capital (
-    valeur INT(11) NOT NULL
+CREATE TABLE Prevision (
+    idPrevision INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    datePrevision date,
+    montant INT,
+    idType INT REFERENCES Type(idType),
+    idRubrique INT REFERENCES Rubrique(idRubrique),
+    idDepartement INT REFERENCES Departement(idDepartement)
+);
+
+CREATE TABLE Realisation(
+    idRealisation INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    dateRealisation date,
+    montant INT,
+    idType INT REFERENCES Type(idType),
+    idRubrique INT REFERENCES Rubrique(idRubrique),
+    idDepartement INT REFERENCES Departement(idDepartement)
+);
+
+CREATE TABLE demandeFinance(
+    idDemandeFinance INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    dateDemande date,
+    dateAcceptation date,
+    argentManque INT
 );
