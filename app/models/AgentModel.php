@@ -15,6 +15,15 @@ class AgentModel {
         $query = "SELECT * FROM agent";
         return $this->db->fetchAll($query);
     }
+
+    public function findById($id) {
+        $query = "SELECT * FROM agent WHERE id_agent = ?";
+        $result = $this->db->fetchAll($query, [$id]);
+        if (count($result) > 0) {
+            return $result[0];
+        }
+        return null;
+    }
     
     public function authAdmin($nom_agent, $prenom_agent) {
         $query = "SELECT * FROM Agent WHERE nom_agent = ? and prenom_agent = ?";

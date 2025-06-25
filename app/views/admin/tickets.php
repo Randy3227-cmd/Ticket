@@ -11,6 +11,8 @@
                     <th>Priorité</th>
                     <th>Type</th>
                     <th>Catégorie</th>
+                    <th>Date de début</th>
+                    <th>Date de fin</th>
                     <th>Client</th>
                     <th>Agent responsable</th>
                     <th>Status</th>
@@ -26,6 +28,8 @@
                             <td><?= htmlspecialchars($ticket['severity_label']) ?></td>
                             <td><?= htmlspecialchars($ticket['type_label']) ?></td>
                             <td><?= htmlspecialchars($ticket['category_label']) ?></td>
+                            <td><?= htmlspecialchars($ticket['array_options']['options_date_creation']) ?></td>
+                            <td><?= htmlspecialchars($ticket['array_options']['options_date_fin']) ?></td>
                             <td>
                                 <?php
                                 $client = array_filter($clients, function($c) use ($ticket) {

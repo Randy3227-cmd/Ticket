@@ -5,6 +5,9 @@ use app\models\DolibarrModel;
 use app\models\DemandeTicketModel;
 use app\models\AgentModel;
 use app\models\ClientModel;
+use app\models\RealisationModel;
+use app\models\PrevisionModel;
+use app\models\DemandeFinanceModel;
 use DateTime;
 use Exception;
 use Flight;
@@ -15,6 +18,38 @@ class TicketController
     public function __construct()
     {
 
+    }
+    public function ajouter_realisation($montant)
+    {
+        $date = date('Y-m-d');
+
+        $realisationModel = new RealisationModel(Flight::db());
+        $previsionModel = new PrevisionModel(Flight::db());
+        $demandeFinanceModel = new DemandeFinanceModel(Flight::db());
+
+        if ($montant === null) {
+            return ['success' => false, 'error' => 'Données manquantes'];
+        }
+
+        try {
+            $prevision = $previsionModel->getByDate2($date);
+            $montant2 = $prevision['montant'] ?? 0;
+
+            if ($montant > $montant2) {
+                $demandeFinanceModel->create($date, NULL, $montant - $montant2);
+                return ['success' => true, 'message' => 'Demande de financement générée.'];
+            } else {
+                $success = $realisationModel->create($date, $montant, 1, 1, 6);
+                if ($success) {
+                    return ['success' => true, 'message' => 'Réalisation enregistrée.'];
+                } else {
+                    return ['success' => false, 'error' => 'Erreur lors de l’enregistrement.'];
+                }
+            }
+
+        } catch (Exception $e) {
+            return ['success' => false, 'error' => $e->getMessage()];
+        }
     }
     public function findAll()
     {
@@ -193,33 +228,54 @@ class TicketController
         $message = $_POST['message'] ?? '';
         $fk_statut = $_POST['fk_statut'] ?? null;
         $dolibarrModel = new DolibarrModel();
+        $agentModel = new AgentModel(Flight::db());
 
         if (!$ticketId) {
             echo json_encode(['success' => false, 'error' => 'ID manquant']);
             return;
         }
-        if($fk_statut == 5 || $fk_statut == 6){
+        if ($fk_statut == 5 || $fk_statut == 6) {
+            $date_fin = date('Y-m-d H:i:s');
             $result = $dolibarrModel->updateDolibarrTicket($ticketId, [
                 'subject' => $subject,
                 'message' => $message,
                 'status' => $fk_statut,
                 'array_options' => [
-                'options_date_fin' => date('Y-m-d H:i:s'),
-            ],
+                    'options_date_fin' => $date_fin,
+                ],
             ]);
+            if ($fk_statut == 5) {
+                $ticket = $dolibarrModel->getDolibarrTicket($ticketId);
+                $agent = $agentModel->findById($ticket['array_options']['options_agentid_external']);
+                $date_debut = $ticket['array_options']['options_date_creation'] ?? null;
+                if ($date_debut && isset($agent['tarif'])) {
+                    if (is_numeric($date_debut)) {
+                        $date_debut = date('Y-m-d H:i:s', $date_debut);
+                    }
+                    $datetime1 = new DateTime($date_debut);
+                    $datetime2 = new DateTime($date_fin);
+                    $interval = $datetime1->diff($datetime2);
+                    $hours = $interval->days * 24 + $interval->h + $interval->i / 60;
+                    $money = $hours * $agent['tarif'];
+                    $test = $this->ajouter_realisation($money);
+                    if (isset($test['error'])) {
+                        echo json_encode(['success' => false, 'error' => $test['error']]);
+                    }
+                }
+            }
             if (isset($result['error'])) {
                 echo json_encode(['success' => false, 'error' => $result['error']]);
             } else {
                 echo json_encode(['success' => true]);
             }
-        }else{
+        } else {
             $result = $dolibarrModel->updateDolibarrTicket($ticketId, [
                 'subject' => $subject,
                 'message' => $message,
                 'status' => $fk_statut,
                 'array_options' => [
-                'options_date_fin' => date('Y-m-d H:i:s'),
-            ],
+                    'options_date_fin' => date('Y-m-d H:i:s'),
+                ],
             ]);
             if (isset($result['error'])) {
                 echo json_encode(['success' => false, 'error' => $result['error']]);
@@ -229,7 +285,7 @@ class TicketController
         }
 
 
-        
+
     }
 
 
