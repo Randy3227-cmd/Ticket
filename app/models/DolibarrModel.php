@@ -84,17 +84,10 @@ class DolibarrModel
             return ['error' => "Erreur API Dolibarr ($httpCode) : " . $errorMsg];
         }
 
-        // Vérification que la réponse contient bien les champs attendus
-        if (!is_array($result) || !isset($result['id']) || !isset($result['ref'])) {
-            return ['error' => 'Réponse API invalide', 'response' => $result];
-        }
-
         // Retourne les données du ticket créé
         return [
             'success' => true,
-            'ticket_id' => $result['id'],
-            'ticket_ref' => $result['ref'],
-            'status' => $result['status'] ?? null,
+            'ticket_id' => $result,
             'message' => 'Ticket créé avec succès'
         ];
     }
