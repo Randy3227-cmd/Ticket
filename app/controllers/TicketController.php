@@ -5,6 +5,7 @@ use app\models\DolibarrModel;
 use app\models\DemandeTicketModel;
 use app\models\AgentModel;
 use app\models\ClientModel;
+use DateTime;
 use Exception;
 use Flight;
 
@@ -144,8 +145,9 @@ class TicketController
             'category_label' => $categoriesMap[$categorie]['label'] ?? 'Other',
             'array_options' => [
                 'options_userid_external' => $id_client,
-                'options_agentid_external' => $id_agent
-            ]
+                'options_agentid_external' => $id_agent,
+                'options_date_creation' => date('Y-m-d H:i:s'),
+            ],
         ];
 
 
@@ -201,7 +203,9 @@ class TicketController
                 'subject' => $subject,
                 'message' => $message,
                 'status' => $fk_statut,
-                'date_close' => date('Y-m-d H:i:s'),
+                'array_options' => [
+                'options_date_fin' => date('Y-m-d H:i:s'),
+            ],
             ]);
             if (isset($result['error'])) {
                 echo json_encode(['success' => false, 'error' => $result['error']]);
@@ -213,7 +217,9 @@ class TicketController
                 'subject' => $subject,
                 'message' => $message,
                 'status' => $fk_statut,
-                'date_close' => date('Y-m-d H:i:s'),
+                'array_options' => [
+                'options_date_fin' => date('Y-m-d H:i:s'),
+            ],
             ]);
             if (isset($result['error'])) {
                 echo json_encode(['success' => false, 'error' => $result['error']]);

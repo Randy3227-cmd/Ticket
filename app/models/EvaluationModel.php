@@ -15,7 +15,7 @@ class EvaluationModel {
     public function evaluate($id_client, $id_agent, $note, $commentaires) {
         try {
             $check = $this->db->prepare("SELECT id_note FROM notes WHERE id_client = ? AND id_agent = ?");
-            $check->execute([$id_client, $id_agent, $commentaires]);
+            $check->execute([$id_client, $id_agent]);
             $existingNote = $check->fetch();
     
             if ($existingNote) {
