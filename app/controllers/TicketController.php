@@ -270,11 +270,11 @@ class TicketController
                     }
                 }
                 $notificationModel = new NotificationModel(Flight::db());
-                $notificationModel->sendNotificationToClient($id_client, 'Ticket terminé', 'Votre ticket a été marqué comme terminé.');
+                $notificationModel->sendNotificationToClient($id_client, 'Ticket numero: '. $ticketId . ' terminé');
             }
-            if(fk_statut == 6) {
+            if($fk_statut == 6) {
                 $notificationModel = new NotificationModel(Flight::db());
-                $notificationModel->sendNotificationToClient($id_client, 'Ticket annulé', 'Votre ticket a été annulé.');
+                $notificationModel->sendNotificationToClient($id_client, 'Ticket numero: '. $ticketId . ' annulé');
             }
             if (isset($result['error'])) {
                 echo json_encode(['success' => false, 'error' => $result['error']]);
@@ -296,7 +296,7 @@ class TicketController
                 echo json_encode(['success' => true]);
             }
             $notificationModel = new NotificationModel(Flight::db());
-            $notificationModel->sendNotificationToClient($id_client,'Ticket mis à jour', 'Votre ticket a été mis à jour avec succès.');
+            $notificationModel->sendNotificationToClient($id_client,'Votre ticket numero: '.$ticketId.' a été mis à jour avec succès en : '.Flight::get('statut')[$fk_statut]);
         }
 
 
