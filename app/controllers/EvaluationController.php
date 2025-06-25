@@ -11,6 +11,7 @@ class EvaluationController {
         
     }
     public function evaluate(){
+        $id_ticket = Flight::request()->data->id_ticket ?? 0;  
         $id_client = Flight::request()->data->id_client;
         $id_agent = Flight::request()->data->id_agent;
         $note = Flight::request()->data->note;
@@ -23,7 +24,7 @@ class EvaluationController {
 
         try {
             $evaluationModel = new EvaluationModel(Flight::db());
-            $result = $evaluationModel->evaluate($id_client, $id_agent, $note, $commentaire);
+            $result = $evaluationModel->evaluate($id_client, $id_agent, $note, $commentaire, $id_ticket);
 
             if ($result) {
                 Flight::json(['success' => 'Évaluation enregistrée avec succès']);
