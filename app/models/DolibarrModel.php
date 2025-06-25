@@ -7,7 +7,9 @@ use Flight;
 
 class DolibarrModel
 {
-    private $apiUrl = 'http://localhost/dolibarr-21.0.1/htdocs/api/index.php/';
+    // private $apiUrl = 'http://localhost/dolibarr-21.0.1/htdocs/api/index.php/';
+
+    private $apiUrl = 'http://localhost/dolibarr/dolibarr-21.0.1/htdocs/api/index.php/'; // Michou
 
 
 
