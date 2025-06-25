@@ -80,6 +80,7 @@
             <li><a href="<?= BASE_URL ?>/client/tickets">🎫 Mes Tickets</a></li>
             <li><a href="<?= BASE_URL ?>/client/demandes">📄 Mes Demandes</a></li>
             <li><a href="<?= BASE_URL ?>/discussionClient">💬 Discussion</a></li>
+            <li><a href="<?= BASE_URL ?>/notification">💬 Notification</a></li>
         </ul>
     </nav>
 

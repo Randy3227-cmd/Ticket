@@ -14,6 +14,8 @@ use app\controllers\RealisationController;
 
 use app\controllers\DashboardController;
 
+use app\controllers\NotificationController;
+
 $dashboardController = new DashboardController();       
 
 $clientController = new ClientController();
@@ -23,6 +25,7 @@ $ticketController = new TicketController();
 $discussionController = new DiscussionController();
 $evaluationController = new EvaluationController();
 $realisationController = new RealisationController();
+$notificationController = new NotificationController();
 
 $router->get('/', [$adminController, 'accueil']);
 $router->get('/login', [$clientController, 'login']);
@@ -58,3 +61,6 @@ $router->post('/ticket/evaluation', [$evaluationController, 'evaluate']);
 
 $router->get('/admin/dashboard', [$dashboardController, 'showDashboard']);
 
+
+
+$router->get('/notification', [$notificationController, 'notification']);

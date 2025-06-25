@@ -58,6 +58,13 @@ CREATE TABLE HISTORIQUE_STATUT(
     date_changement DATETIME NOT NULL,
 );
 
+CREATE TABLE notification(
+    id_notification INT PRIMARY KEY AUTO_INCREMENT,
+    id_client INT REFERENCES client(id_client),
+    notification TEXT,
+    date_notification DATETIME
+);
+
 
 /*Mbola tsy ao*/
 -- CREATE TABLE commentaires(
