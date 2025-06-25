@@ -51,6 +51,12 @@ CREATE TABLE notes(
     FOREIGN KEY (id_agent) REFERENCES agent(id_agent)
 );
 
+CREATE TABLE HISTORIQUE_STATUT(
+    id_historique INT PRIMARY KEY AUTO_INCREMENT,
+    id_ticket INT NOT NULL,
+    status INT NOT NULL,
+    date_changement DATETIME NOT NULL,
+);
 
 
 /*Mbola tsy ao*/

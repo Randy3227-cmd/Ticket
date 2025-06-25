@@ -62,12 +62,12 @@ class DashboardModel
 
         foreach ($tickets as $ticket) {
             if ($ticket['fk_statut'] == 5) {
-                $creationTimestamp = (is_numeric($ticket['datec']) && $ticket['datec'] > 0)
-                    ? (int) $ticket['datec']
+                $creationTimestamp = (is_numeric($ticket['array_options']['options_date_creation']) && $ticket['array_options']['options_date_creation'] > 0)
+                    ? (int) $ticket['array_options']['options_date_creation']
                     : 0;
 
-                $closeTimestamp = (is_numeric($ticket['date_close']) && $ticket['date_close'] > 0)
-                    ? (int) $ticket['date_close']
+                $closeTimestamp = (is_numeric($ticket['array_options']['options_date_fin']) && $ticket['array_options']['options_date_fin'] > 0)
+                    ? (int) $ticket['array_options']['options_date_fin']
                     : 0;
 
                 $diffInSeconds = max(0, $closeTimestamp - $creationTimestamp);
@@ -77,7 +77,7 @@ class DashboardModel
         }
 
         if ($count === 0) {
-            throw new Exception("Aucun ticket résolu valide");
+            return 0;
         }
 
         $averageSeconds = (int)($totalSeconds / $count);
@@ -121,8 +121,8 @@ class DashboardModel
 
             foreach ($tickets as $ticket) {
                 // Traitement des tickets créés
-                if (isset($ticket['date_creation'])) {
-                    $date = new \DateTime('@' . $ticket['date_creation']);
+                if (isset($ticket['array_options']['options_date_creation'])) {
+                    $date = new \DateTime('@' . $ticket['array_options']['options_date_creation']);
                     $day = (int)$date->format('d');
                     $ticketMonth = (int)$date->format('m');
                     $ticketYear = (int)$date->format('Y');
@@ -133,8 +133,8 @@ class DashboardModel
                 }
 
                 // Traitement des tickets fermés (résolus ou abandonnés)
-                if (isset($ticket['date_close']) && $ticket['date_close'] > 0) {
-                    $closeDate = new \DateTime('@' . $ticket['date_close']);
+                if (isset($ticket['array_options']['options_date_fin']) && $ticket['array_options']['options_date_fin'] > 0) {
+                    $closeDate = new \DateTime('@' . $ticket['array_options']['options_date_fin']);
                     $closeDay = (int)$closeDate->format('d');
                     $closeMonth = (int)$closeDate->format('m');
                     $closeYear = (int)$closeDate->format('Y');
