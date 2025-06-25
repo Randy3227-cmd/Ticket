@@ -208,6 +208,7 @@ class TicketController
     public function refuser()
     {
         $id = Flight::request()->query['id'] ?? null;
+        $idClient = Flight::request()->query['idClient'] ?? null;
 
         if (empty($id)) {
             Flight::redirect(BASE_URL . '/admin/demandes?error=ID de la demande manquant');
@@ -216,8 +217,10 @@ class TicketController
 
         $demandeTicketModel = new DemandeTicketModel(Flight::db());
         $success = $demandeTicketModel->refuse($id);
-
+        
         if ($success) {
+            $notificationModel = new NotificationModel(Flight::db());
+            $notificationModel->sendNotificationToClient($idClient, 'Demande de ticket refusée', 'Votre demande de ticket a été refusée.');
             Flight::redirect(BASE_URL . '/admin/demandes?success=Demande refusée avec succès');
         } else {
             Flight::redirect(BASE_URL . '/admin/demandes?error=Erreur lors du refus de la demande');

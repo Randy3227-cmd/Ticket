@@ -27,7 +27,7 @@
                     <td><?= htmlspecialchars($demande['nom_client']) ?></td>
                     <td>
                         <a href="<?= BASE_URL ?>/admin/demandes/create?id=<?= $demande['id_demande'] ?>" class="btn btn-primary">Traiter</a>
-                        <a href="<?= BASE_URL ?>/admin/demandes/refuser?id=<?= $demande['id_demande'] ?>" class="btn btn-danger" onclick="return confirm('Voulez-vous vraiment supprimer cette demande ?');">Refuser</a>
+                        <a href="<?= BASE_URL ?>/admin/demandes/refuser?id=<?= $demande['id_demande'] ?>&idClient=<?= $demande['id_client'] ?>" class="btn btn-danger" onclick="return confirm('Voulez-vous vraiment supprimer cette demande ?');">Refuser</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
