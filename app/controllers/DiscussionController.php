@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 use app\models\DiscussionModel;
+use app\models\NotificationModel;
 use Exception;
 use Flight;
 
@@ -28,6 +29,8 @@ class DiscussionController {
 
         $discussionModel = new DiscussionModel(Flight::db());
         $send = $discussionModel->sendMessageToAgent(Flight::session('id_client'), $message);
+        $notificationModel = new NotificationModel(Flight::db());
+        $notificationModel->sendNotificationToClient(Flight::session('id_client'), 'Votre message e été envoyé');
         $this->getMessage();
     }
 
@@ -48,7 +51,8 @@ class DiscussionController {
     
         $discussionModel = new DiscussionModel(Flight::db());
         $success = $discussionModel->sendMessageToClient($id_agent, $id_client, $message);
-    
+        $notificationModel = new NotificationModel(Flight::db());
+        $notificationModel->sendNotificationToClient($id_agent, 'Vous avez reçu un message de votre agent : '.$message);
         if ($success) {
             Flight::json(['success' => true]);
         } else {

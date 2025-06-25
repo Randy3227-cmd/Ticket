@@ -40,6 +40,7 @@
                             <td><?php if ($ticket['fk_statut'] != 5 && $ticket['fk_statut'] != 6): ?>
                             <button class="btn-open-edit"
                                 data-id="<?= $ticket['id'] ?>"
+                                data-client="<?= $ticket['array_options']['options_userid_external'] ?>" 
                                 data-subject="<?= htmlspecialchars($ticket['subject'], ENT_QUOTES) ?>"
                                 data-message="<?= htmlspecialchars($ticket['message'], ENT_QUOTES) ?>"
                                 data-statut="<?= $ticket['fk_statut'] ?>">
@@ -68,6 +69,7 @@
     <h2>Modifier le Ticket</h2>
     <form id="edit-form">
         <input type="hidden" name="id" id="edit-id">
+        <input type="hidden" name="idClient" id="edit-idClient">
         <label>Sujet :</label>
         <input type="text" name="subject" id="edit-subject" required><br>
         
@@ -95,8 +97,10 @@ document.querySelectorAll('.btn-open-edit').forEach(btn => {
         const subject = this.dataset.subject;
         const message = this.dataset.message;
         const statutText = this.dataset.statut;
+        const id_client = this.dataset.client;
 
         document.getElementById('edit-id').value = id;
+        document.getElementById('edit-idClient').value = id_client;
         document.getElementById('edit-subject').value = subject;
         document.getElementById('edit-message').value = message;
         document.getElementById('edit-statut').value = statutText;

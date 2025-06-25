@@ -8,6 +8,7 @@ use app\models\ClientModel;
 use app\models\RealisationModel;
 use app\models\PrevisionModel;
 use app\models\DemandeFinanceModel;
+use app\models\NotificationModel;
 use DateTime;
 use Exception;
 use Flight;
@@ -165,6 +166,8 @@ class TicketController
             Flight::redirect('create_demande?error=Tous les champs sont requis');
             return;
         }
+        $notificationModel = new NotificationModel(Flight::db());
+        $notificationModel->sendNotificationToClient($id_client, 'Nouvelle demande de ticket', 'Votre demande de ticket a été créée avec succès.');
 
         $dolibarrModel = new DolibarrModel();
         $demandeTicketModel = new DemandeTicketModel(Flight::db());
@@ -224,6 +227,7 @@ class TicketController
     public function update()
     {
         $ticketId = $_POST['id'] ?? null;
+        $id_client = $_POST['idClient'] ?? null;
         $subject = $_POST['subject'] ?? '';
         $message = $_POST['message'] ?? '';
         $fk_statut = $_POST['fk_statut'] ?? null;
@@ -262,6 +266,12 @@ class TicketController
                         echo json_encode(['success' => false, 'error' => $test['error']]);
                     }
                 }
+                $notificationModel = new NotificationModel(Flight::db());
+                $notificationModel->sendNotificationToClient($id_client, 'Ticket terminé', 'Votre ticket a été marqué comme terminé.');
+            }
+            if(fk_statut == 6) {
+                $notificationModel = new NotificationModel(Flight::db());
+                $notificationModel->sendNotificationToClient($id_client, 'Ticket annulé', 'Votre ticket a été annulé.');
             }
             if (isset($result['error'])) {
                 echo json_encode(['success' => false, 'error' => $result['error']]);
@@ -282,6 +292,8 @@ class TicketController
             } else {
                 echo json_encode(['success' => true]);
             }
+            $notificationModel = new NotificationModel(Flight::db());
+            $notificationModel->sendNotificationToClient($id_client,'Ticket mis à jour', 'Votre ticket a été mis à jour avec succès.');
         }
 
 
