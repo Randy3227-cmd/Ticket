@@ -76,7 +76,7 @@ document.querySelectorAll('.evaluation').forEach(container => {
         star.addEventListener('mouseout', () => {
             stars.forEach(s => s.classList.remove('hover'));
         });
-
+        const BASE_URL = "<?= htmlspecialchars(BASE_URL) ?>";
         star.addEventListener('click', () => {
             selectedNote = parseInt(star.dataset.note);
             const id_client = container.dataset.client;
@@ -94,7 +94,7 @@ document.querySelectorAll('.evaluation').forEach(container => {
             commentBtn.addEventListener('click', () => {
                 const commentaire = commentBox.querySelector('.comment-text').value;
 
-                fetch('/ticket/evaluation', {
+                fetch(BASE_URL + '/ticket/evaluation', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     body: `id_client=${id_client}&id_ticket=${id_ticket}&id_agent=${id_agent}&note=${selectedNote}&commentaire=${encodeURIComponent(commentaire)}`
