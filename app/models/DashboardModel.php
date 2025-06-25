@@ -49,33 +49,51 @@ class DashboardModel
 
     // 3. Temps moyen de résolution des tickets (via Dolibarr)
     public function getAverageResolutionTime()
-    {
-        try {
-            $tickets = $this->dolibarrModel->findAllTickets();
-            
-            if (isset($tickets['error'])) {
-                return 0;
-            }
+{
+    try {
+        $tickets = $this->dolibarrModel->findAllTickets();
 
-            $totalTime = 0;
-            $count = 0;
-
-            foreach ($tickets as $ticket) {
-                // Vérifier si le ticket est résolu (statut 5) et a des dates
-                if ($ticket['fk_statut'] == 5 && isset($ticket['date_creation']) && isset($ticket['date_close'])) {
-                    $creation = new \DateTime('@' . $ticket['date_creation']);
-                    $close = new \DateTime('@' . $ticket['date_close']);
-                    $diff = $close->diff($creation);
-                    $totalTime += $diff->days;
-                    $count++;
-                }
-            }
-
-            return $count > 0 ? round($totalTime / $count, 2) : 0;
-        } catch (Exception $e) {
-            return 0;
+        if (isset($tickets['error'])) {
+            throw new Exception("Erreur de récupération des tickets");
         }
+
+        $totalSeconds = 0;
+        $count = 0;
+
+        foreach ($tickets as $ticket) {
+            if ($ticket['fk_statut'] == 5) {
+                $creationTimestamp = (is_numeric($ticket['datec']) && $ticket['datec'] > 0)
+                    ? (int) $ticket['datec']
+                    : 0;
+
+                $closeTimestamp = (is_numeric($ticket['date_close']) && $ticket['date_close'] > 0)
+                    ? (int) $ticket['date_close']
+                    : 0;
+
+                $diffInSeconds = max(0, $closeTimestamp - $creationTimestamp);
+                $totalSeconds += $diffInSeconds;
+                $count++;
+            }
+        }
+
+        if ($count === 0) {
+            throw new Exception("Aucun ticket résolu valide");
+        }
+
+        $averageSeconds = (int)($totalSeconds / $count);
+        $days = floor($averageSeconds / 86400);
+        $hours = floor(($averageSeconds % 86400) / 3600);
+        $minutes = floor(($averageSeconds % 3600) / 60);
+        $seconds = $averageSeconds % 60;
+
+        return "$days jour(s) $hours h $minutes min $seconds s";
+
+    } catch (\Throwable $e) {
+        throw new \RuntimeException("Erreur dans getAverageResolutionTime() : " . $e->getMessage());
     }
+}
+
+
 
     // 4. Statistiques tickets par jour
     public function getTicketStatsByDay($month, $year)

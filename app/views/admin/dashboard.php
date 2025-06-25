@@ -129,7 +129,7 @@
         <div class="dashboard-section">
             <h3>1. Temps moyen de résolution des tickets</h3>
             <div class="metric-box">
-                <?= number_format($avgResolutionTime, 1) ?> jours
+                <?= ($avgResolutionTime) ?>
             </div>
         </div>
 
