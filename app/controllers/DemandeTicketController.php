@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 use app\models\DemandeTicketModel;
+use app\models\NotificationModel;
 use Exception;
 use Flight;
 
@@ -49,6 +50,7 @@ class DemandeTicketController
 
     public function create()
     {
+        
         $data = Flight::request()->data;
         $id_client = Flight::session('id_client');
         $sujet = $data['sujet'] ?? null;
@@ -77,10 +79,12 @@ class DemandeTicketController
         }
 
         $demandeTicketModel = new DemandeTicketModel(Flight::db());
+        $notificationModel = new NotificationModel(Flight::db());
 
         try {
             $success = $demandeTicketModel->save($sujet, $message, $filePath);
             if ($success) {
+                $notificationModel->sendNotificationToClient($id_client, 'Votre demande de ticket a été créée avec succès.');
                 Flight::redirect('create?success=Demande créée avec succès');
             } else {
                 Flight::redirect('create_demande?error=Erreur lors de la création de la demande');

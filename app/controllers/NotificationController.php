@@ -16,6 +16,17 @@ class NotificationController {
         $notifications = $notificationModel->notification($id_client);
         Flight::render('client/notification.php', ['notifications' => $notifications]);
     }
+
+    public function supprimer(){
+        $id = Flight::request()->query['id'] ?? null;
+        $notificationModel = new NotificationModel(Flight::db());
+        $success = $notificationModel->supprimer($id);
+        if ($success) {
+            Flight::redirect(BASE_URL . '/notification');
+        } else {
+            Flight::render('error.php', ['message' => 'Erreur lors de la suppression de la notification.']);
+        }
+    }
     
     
     

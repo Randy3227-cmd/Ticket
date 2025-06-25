@@ -53,6 +53,9 @@
                     <div class="notification-message"><?= htmlspecialchars($notif['notification']) ?></div>
                     <div class="notification-date"><?= htmlspecialchars($notif['date_notification']) ?></div>
                 </div>
+                <div>
+                    <a href="<?= BASE_URL?>/notification/supprimer?id=<?= htmlspecialchars($notif['id_notification']) ?>" class="btn btn-secondary">Supprimer</a>
+                </div>
             <?php endforeach; ?>
         <?php else: ?>
             <p>Aucune notification pour le moment.</p>

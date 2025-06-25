@@ -26,6 +26,15 @@ class NotificationModel {
             throw $e;
         }
     }
+    public function supprimer($id_notification) {
+        $query = "DELETE FROM notification WHERE id_notification = ?";
+        try {
+            $stmt = $this->db->prepare($query);
+            return $stmt->execute([$id_notification]);
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
 
 }
 

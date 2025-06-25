@@ -167,11 +167,10 @@ class TicketController
             return;
         }
         $notificationModel = new NotificationModel(Flight::db());
-        $notificationModel->sendNotificationToClient($id_client, 'Nouvelle demande de ticket', 'Votre demande de ticket a été créée avec succès.');
-
+        
         $dolibarrModel = new DolibarrModel();
         $demandeTicketModel = new DemandeTicketModel(Flight::db());
-
+        
         $ticketData = [
             'subject' => $subject,
             'message' => $messageContent,
@@ -188,12 +187,13 @@ class TicketController
             ],
         ];
 
-
+        
         try {
             $success = $dolibarrModel->createDolibarrTicket($ticketData);
             if (isset($success['error'])) {
                 throw new Exception($success['error']);
             }
+            $notificationModel->sendNotificationToClient($id_client, 'Votre demande de ticket a été accepté avec succès.');
             $success1 = $demandeTicketModel->updateStatus($id_demande, $success['ticket_id']);
             if ($success1) {
                 Flight::redirect(BASE_URL . '/admin/demandes?success=Ticket créé avec succès');
