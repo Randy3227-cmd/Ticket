@@ -56,4 +56,3 @@ $router->post('/realisation/ajouter_realisation', [$realisationController, 'ajou
 
 $router->post('/ticket/evaluation', [$evaluationController, 'evaluate']);
 
-$router->get('/admin/dashboard', [$dashboardController, 'showDashboard']);

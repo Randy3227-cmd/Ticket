@@ -158,12 +158,12 @@ class TicketController
             }
             $success1 = $demandeTicketModel->updateStatus($id_demande, $success['ticket_id']);
             if ($success1) {
-                Flight::redirect(BASE_URL . '?success=Ticket créé avec succès');
+                Flight::redirect(BASE_URL . '/admin/demandes?success=Ticket créé avec succès');
             } else {
-                Flight::redirect(BASE_URL . '?error=Erreur lors de la création du ticket');
+                Flight::redirect(BASE_URL . '/admin/demandes?error=Erreur lors de la création du ticket');
             }
         } catch (Exception $e) {
-            Flight::redirect(BASE_URL . '?error=' . urlencode($e->getMessage()));
+            Flight::redirect(BASE_URL . '/admin/demandes?error=' . urlencode($e->getMessage()));
         }
     }
 
@@ -172,7 +172,7 @@ class TicketController
         $id = Flight::request()->query['id'] ?? null;
 
         if (empty($id)) {
-            Flight::redirect(BASE_URL . '?error=ID de la demande manquant');
+            Flight::redirect(BASE_URL . '/admin/demandes?error=ID de la demande manquant');
             return;
         }
 

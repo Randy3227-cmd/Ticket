@@ -5,7 +5,6 @@
             <li>
                 <strong>Sujet:</strong> <?php echo htmlspecialchars($demande['sujet']); ?><br>
                 <strong>Message:</strong> <?php echo nl2br(htmlspecialchars($demande['message'])); ?><br>
-                <strong>Date:</strong> <?php echo htmlspecialchars($demande['date_demande']); ?>
             </li>
         <?php endforeach; ?>
     </ul>
