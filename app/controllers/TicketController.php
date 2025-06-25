@@ -196,18 +196,34 @@ class TicketController
             echo json_encode(['success' => false, 'error' => 'ID manquant']);
             return;
         }
-
-        $result = $dolibarrModel->updateDolibarrTicket($ticketId, [
-            'subject' => $subject,
-            'message' => $message,
-            'status' => $fk_statut
-        ]);
-
-        if (isset($result['error'])) {
-            echo json_encode(['success' => false, 'error' => $result['error']]);
-        } else {
-            echo json_encode(['success' => true]);
+        if($fk_statut == 5 || $fk_statut == 6){
+            $result = $dolibarrModel->updateDolibarrTicket($ticketId, [
+                'subject' => $subject,
+                'message' => $message,
+                'status' => $fk_statut,
+                'date_close' => date('Y-m-d H:i:s'),
+            ]);
+            if (isset($result['error'])) {
+                echo json_encode(['success' => false, 'error' => $result['error']]);
+            } else {
+                echo json_encode(['success' => true]);
+            }
+        }else{
+            $result = $dolibarrModel->updateDolibarrTicket($ticketId, [
+                'subject' => $subject,
+                'message' => $message,
+                'status' => $fk_statut,
+                'date_close' => date('Y-m-d H:i:s'),
+            ]);
+            if (isset($result['error'])) {
+                echo json_encode(['success' => false, 'error' => $result['error']]);
+            } else {
+                echo json_encode(['success' => true]);
+            }
         }
+
+
+        
     }
 
 
