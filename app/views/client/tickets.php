@@ -81,6 +81,7 @@ document.querySelectorAll('.evaluation').forEach(container => {
             selectedNote = parseInt(star.dataset.note);
             const id_client = container.dataset.client;
             const id_agent = container.dataset.agent;
+            const id_ticket = container.dataset.id;
 
             stars.forEach(s => {
                 s.classList.toggle('selected', parseInt(s.dataset.note) <= selectedNote);
@@ -96,7 +97,7 @@ document.querySelectorAll('.evaluation').forEach(container => {
                 fetch(BASE_URL + '/ticket/evaluation', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                    body: `id_client=${id_client}&id_agent=${id_agent}&note=${selectedNote}&commentaire=${encodeURIComponent(commentaire)}`
+                    body: `id_client=${id_client}&id_ticket=${id_ticket}&id_agent=${id_agent}&note=${selectedNote}&commentaire=${encodeURIComponent(commentaire)}`
                 })
                 .then(r => r.json())
                 .then(res => {
