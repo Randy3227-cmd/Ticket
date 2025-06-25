@@ -13,13 +13,8 @@ class DolibarrModel
 
 
 
-<<<<<<< Updated upstream
-    // private $apiKey = 'VpAJ7j10Q0KfmBqkqp05Q0xT39Ic5AzZ'; // Riana
-    private $apiKey = '3d8VLS2o0PLypI8OA9vkG0a1zY65Miwf'; // Randy
-=======
     private $apiKey = 'VpAJ7j10Q0KfmBqkqp05Q0xT39Ic5AzZ'; // Riana
     // private $apiKey = '3d8VLS2o0PLypI8OA9vkG0a1zY65Miwf'; // Randy
->>>>>>> Stashed changes
     // private $apiKey = 'el6cv75Sz0jSP3Gps9m4B07gfHEDF6TJ'; // Michou
 
     public function __construct()
