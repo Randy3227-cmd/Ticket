@@ -143,12 +143,12 @@
             <form action="auth_ticket" method="post">
                 <div class="form-group">
                     <label for="nom2">Nom :</label>
-                    <input type="text" name="nom" id="nom2" placeholder="Entrez votre nom" required>
+                    <input type="text" name="nom" id="nom2" placeholder="Entrez votre nom, ex: Rabe " required>
                 </div>
                 
                 <div class="form-group">
                     <label for="prenom2">Prénom :</label>
-                    <input type="text" name="prenom" id="prenom2" placeholder="Entrez votre mot de passe" required>
+                    <input type="text" name="prenom" id="prenom2" placeholder="Entrez votre prenom, ex: Mialy" required>
                 </div>
                 
                 <button type="submit" class="submit-btn">Se connecter</button>
