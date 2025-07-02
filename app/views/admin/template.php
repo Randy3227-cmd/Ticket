@@ -71,6 +71,57 @@
             font-size: 1rem;
             color: #7f8c8d;
         }
+
+        .search-form {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 1000px;
+}
+
+.search-form .form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.search-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.search-form input,
+.search-form select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+.form-submit {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.form-submit button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form-submit button:hover {
+    background-color: #1f6391;
+}
+
     </style>
 </head>
 
@@ -92,6 +143,54 @@
             <li><a href="<?= BASE_URL ?>/admin/dashboard">🗃️ Dashboard</a></li>
         </ul>
     </nav>
+    <section class="search-form">
+    <form action="<?= BASE_URL ?>/admin/recherche" method="GET">
+        <div class="form-row">
+            <label for="sujet">Sujet :</label>
+            <input type="text" id="sujet" name="sujet">
+
+            <label for="message">Message :</label>
+            <input type="text" id="message" name="message">
+
+            <label for="priorite">Priorité :</label>
+            <select id="priorite" name="priorite">
+                <option value="">-- Toutes --</option>
+                <option value="basse">Basse</option>
+                <option value="moyenne">Moyenne</option>
+                <option value="haute">Haute</option>
+            </select>
+
+            <label for="type">Type :</label>
+            <input type="text" id="type" name="type">
+
+            <label for="categorie">Catégorie :</label>
+            <input type="text" id="categorie" name="categorie">
+
+            <label for="date_debut">Date de début :</label>
+            <input type="date" id="date_debut" name="date_debut">
+
+            <label for="date_fin">Date de fin :</label>
+            <input type="date" id="date_fin" name="date_fin">
+
+            <label for="client">Client :</label>
+            <input type="text" id="client" name="client">
+
+            <label for="agent">Agent responsable :</label>
+            <input type="text" id="agent" name="agent">
+
+            <label for="status">Status :</label>
+            <select id="status" name="status">
+                <option value="">-- Tous --</option>
+                <option value="ouvert">Ouvert</option>
+                <option value="en_cours">En cours</option>
+                <option value="ferme">Fermé</option>
+            </select>
+        </div>
+        <div class="form-submit">
+            <button type="submit">🔍 Rechercher</button>
+        </div>
+    </form>
+</section>
 
     <main>
         <?php
