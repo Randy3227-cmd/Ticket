@@ -155,35 +155,48 @@
             <label for="priorite">Priorité :</label>
             <select id="priorite" name="priorite">
                 <option value="">-- Toutes --</option>
-                <option value="basse">Basse</option>
-                <option value="moyenne">Moyenne</option>
-                <option value="haute">Haute</option>
+                <option value="1">Low</option>
+                <option value="2">Normal</option>
+                <option value="3">high</option>
             </select>
 
-            <label for="type">Type :</label>
-            <input type="text" id="type" name="type">
+            <select id="type" name="type">
+                <option value="">-- Toutes --</option>
+                <option value="1">Commercial question</option>
+                <option value="2">Request for functionnal help</option>
+                <option value="3">Issue or bug</option>
+                <option value="4">Problem</option>
+                <option value="5">Change or enhancement request</option>
+                <option value="7">Other</option>
+            </select>
 
             <label for="categorie">Catégorie :</label>
-            <input type="text" id="categorie" name="categorie">
-
-            <label for="date_debut">Date de début :</label>
-            <input type="date" id="date_debut" name="date_debut">
-
-            <label for="date_fin">Date de fin :</label>
-            <input type="date" id="date_fin" name="date_fin">
+            <input type="number" id="categorie" name="categorie">
 
             <label for="client">Client :</label>
-            <input type="text" id="client" name="client">
+            <select name="client" id="client">
+                <?php for ($i=0; $i < count($clients); $i++) { ?>
+                    <option value=<?= $clients[$i]['id_client'] ?>><?= $clients[$i]['nom_client'] ?></option>
+                <?php } ?>
+            </select>
 
             <label for="agent">Agent responsable :</label>
-            <input type="text" id="agent" name="agent">
+            <select name="agent" id="agent">
+                <?php for ($i=0; $i < count($agents); $i++) { ?>
+                    <option value=<?= $agents[$i]['id_agent'] ?>><?= $agents[$i]['nom_agent'] ?></option>
+                <?php } ?>
+            </select>
 
             <label for="status">Status :</label>
             <select id="status" name="status">
                 <option value="">-- Tous --</option>
-                <option value="ouvert">Ouvert</option>
-                <option value="en_cours">En cours</option>
-                <option value="ferme">Fermé</option>
+                <option value="0">non lu</option>
+                <option value="1">lu</option>
+                <option value="2">assigné</option>
+                <option value="3">en cours</option>
+                <option value="4">en attente de retour</option>
+                <option value="5">résolu</option>
+                <option value="6">abandonné</option>
             </select>
         </div>
         <div class="form-submit">
