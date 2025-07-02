@@ -1,3 +1,95 @@
+<section class="search-form">
+    <form action="<?= BASE_URL ?>/admin/recherche" method="POST">
+        <div class="form-row">
+            <label for="sujet">Sujet :</label>
+            <input type="text" id="sujet" name="sujet" value="<?= htmlspecialchars($currentFilters['sujet'] ?? '') ?>">
+
+            <label for="message">Message :</label>
+            <input type="text" id="message" name="message" value="<?= htmlspecialchars($currentFilters['message'] ?? '') ?>">
+
+            <label for="priorite">Priorité :</label>
+            <select id="priorite" name="priorite">
+                <option value="">-- Toutes --</option>
+                <option value="1" <?= ($currentFilters['priorite'] ?? '') == '1' ? 'selected' : '' ?>>Low</option>
+                <option value="2" <?= ($currentFilters['priorite'] ?? '') == '2' ? 'selected' : '' ?>>Normal</option>
+                <option value="3" <?= ($currentFilters['priorite'] ?? '') == '3' ? 'selected' : '' ?>>High</option>
+            </select>
+
+            <label for="type">Type :</label>
+            <select id="type" name="type">
+                <option value="">-- Tous --</option>
+                <option value="1" <?= ($currentFilters['type'] ?? '') == '1' ? 'selected' : '' ?>>Commercial question</option>
+                <option value="2" <?= ($currentFilters['type'] ?? '') == '2' ? 'selected' : '' ?>>Request for functional help</option>
+                <option value="3" <?= ($currentFilters['type'] ?? '') == '3' ? 'selected' : '' ?>>Issue or bug</option>
+                <option value="4" <?= ($currentFilters['type'] ?? '') == '4' ? 'selected' : '' ?>>Problem</option>
+                <option value="5" <?= ($currentFilters['type'] ?? '') == '5' ? 'selected' : '' ?>>Change or enhancement request</option>
+                <option value="7" <?= ($currentFilters['type'] ?? '') == '7' ? 'selected' : '' ?>>Other</option>
+            </select>
+
+            <label for="categorie">Catégorie :</label>
+            <input type="number" id="categorie" name="categorie" value="<?= htmlspecialchars($currentFilters['categorie'] ?? '') ?>">
+
+            <label for="client">Client :</label>
+            <select name="client" id="client">
+                <option value="">-- Tous --</option>
+                <?php if (!empty($clients)): ?>
+                    <?php foreach ($clients as $client): ?>
+                        <option value="<?= htmlspecialchars($client['id_client']) ?>" 
+                                <?= ($currentFilters['client'] ?? '') == $client['id_client'] ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($client['nom_client']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </select>
+
+            <label for="agent">Agent responsable :</label>
+            <select name="agent" id="agent">
+                <option value="">-- Tous --</option>
+                <?php if (!empty($agents)): ?>
+                    <?php foreach ($agents as $agent): ?>
+                        <option value="<?= htmlspecialchars($agent['id_agent']) ?>" 
+                                <?= ($currentFilters['agent'] ?? '') == $agent['id_agent'] ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($agent['nom_agent']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </select>
+
+            <label for="status">Statut :</label>
+            <select id="status" name="status">
+                <option value="">-- Tous --</option>
+                <option value="0" <?= ($currentFilters['status'] ?? '') == '0' ? 'selected' : '' ?>>Non lu</option>
+                <option value="1" <?= ($currentFilters['status'] ?? '') == '1' ? 'selected' : '' ?>>Lu</option>
+                <option value="2" <?= ($currentFilters['status'] ?? '') == '2' ? 'selected' : '' ?>>Assigné</option>
+                <option value="3" <?= ($currentFilters['status'] ?? '') == '3' ? 'selected' : '' ?>>En cours</option>
+                <option value="4" <?= ($currentFilters['status'] ?? '') == '4' ? 'selected' : '' ?>>En attente de retour</option>
+                <option value="5" <?= ($currentFilters['status'] ?? '') == '5' ? 'selected' : '' ?>>Résolu</option>
+                <option value="6" <?= ($currentFilters['status'] ?? '') == '6' ? 'selected' : '' ?>>Abandonné</option>
+            </select>
+        </div>
+        <div class="form-submit">
+            <button type="submit">🔍 Rechercher</button>
+            <button type="button" onclick="resetForm()">🔄 Réinitialiser</button>
+        </div>
+    </form>
+</section>
+
+<script>
+function resetForm() {
+    // Réinitialiser tous les champs du formulaire
+    document.getElementById('sujet').value = '';
+    document.getElementById('message').value = '';
+    document.getElementById('priorite').value = '';
+    document.getElementById('type').value = '';
+    document.getElementById('categorie').value = '';
+    document.getElementById('client').value = '';
+    document.getElementById('agent').value = '';
+    document.getElementById('status').value = '';
+    
+    // Optionnel : soumettre automatiquement pour afficher tous les tickets
+    // document.querySelector('form').submit();
+}
+</script>
 <div class="ticket-container">
     <h1>Tickets à traiter</h1>
 

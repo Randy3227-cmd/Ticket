@@ -73,6 +73,98 @@ class TicketController
 
         Flight::render('admin/template.php', $data);
     }
+
+    public function findAllFiltered()
+    {
+        $dolibarrModel = new DolibarrModel();
+        $clientModel = new ClientModel(Flight::db());
+        $agentModel = new AgentModel(Flight::db());
+
+        // Récupération des données selon la méthode HTTP
+        $requestData = [];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $requestData = Flight::request()->data;
+        } else {
+            // Pour les requêtes GET
+            $requestData = Flight::request()->query;
+        }
+
+        $severityMap = Flight::get('severityMap');
+        $typesMap = Flight::get('ticketTypeMap');
+        $categoriesMap = Flight::get('ticketCategoryMap');
+
+        // Récupération directe des champs depuis le formulaire
+        $subject = trim($requestData['sujet'] ?? '');
+        $messageContent = trim($requestData['message'] ?? '');
+        $severity = $requestData['priorite'] ?? '';
+        $type = $requestData['type'] ?? '';
+        $categorie = $requestData['categorie'] ?? '';
+        $id_client = $requestData['client'] ?? '';
+        $id_agent = $requestData['agent'] ?? '';
+        $status = $requestData['status'] ?? '';
+
+        // Construction de ticketData au format requis - seulement avec les valeurs non vides
+        $ticketData = [];
+
+        // Ajouter uniquement les filtres non vides
+        if (!empty($subject)) {
+            $ticketData['subject'] = $subject;
+        }
+
+        if (!empty($messageContent)) {
+            $ticketData['message'] = $messageContent;
+        }
+
+        if (!empty($severity) && isset($severityMap[$severity])) {
+            $ticketData['severity_code'] = $severityMap[$severity]['code'];
+            $ticketData['severity_label'] = $severityMap[$severity]['label'];
+        }
+
+        if (!empty($type) && isset($typesMap[$type])) {
+            $ticketData['type_code'] = $typesMap[$type]['code'];
+            $ticketData['type_label'] = $typesMap[$type]['label'];
+        }
+
+        if (!empty($categorie) && isset($categoriesMap[$categorie])) {
+            $ticketData['category_code'] = $categoriesMap[$categorie]['code'];
+            $ticketData['category_label'] = $categoriesMap[$categorie]['label'];
+        }
+
+        if (!empty($status)) {
+            $ticketData['fk_statut'] = $status;
+        }
+
+        // Gestion des array_options seulement si nécessaire
+        $arrayOptions = [];
+
+        if (!empty($id_client)) {
+            $arrayOptions['options_userid_external'] = $id_client;
+        }
+
+        if (!empty($id_agent)) {
+            $arrayOptions['options_agentid_external'] = $id_agent;
+        }
+
+        // Ajouter array_options seulement s'il y a des valeurs
+        if (!empty($arrayOptions)) {
+            $ticketData['array_options'] = $arrayOptions;
+        }
+
+        // Appel de la méthode Dolibarr avec la structure unifiée
+        $tickets = $dolibarrModel->findTickets($ticketData);
+
+        $viewData = [
+            'page' => 'tickets',
+            'tickets' => $tickets ?: [],
+            'clients' => $clientModel->findAll(),
+            'agents' => $agentModel->findAll(),
+            'statut' => Flight::get('statut'),
+            'currentFilters' => $requestData // Pour maintenir les valeurs dans le formulaire
+        ];
+
+        Flight::render('admin/template.php', $viewData);
+    }
+
     public function findTicketsByExternalUserId()
     {
         $dolibarrModel = new DolibarrModel();
@@ -167,10 +259,10 @@ class TicketController
             return;
         }
         $notificationModel = new NotificationModel(Flight::db());
-        
+
         $dolibarrModel = new DolibarrModel();
         $demandeTicketModel = new DemandeTicketModel(Flight::db());
-        
+
         $ticketData = [
             'subject' => $subject,
             'message' => $messageContent,
@@ -187,7 +279,7 @@ class TicketController
             ],
         ];
 
-        
+
         try {
             $success = $dolibarrModel->createDolibarrTicket($ticketData);
             if (isset($success['error'])) {
@@ -217,7 +309,7 @@ class TicketController
 
         $demandeTicketModel = new DemandeTicketModel(Flight::db());
         $success = $demandeTicketModel->refuse($id);
-        
+
         if ($success) {
             $notificationModel = new NotificationModel(Flight::db());
             $notificationModel->sendNotificationToClient($idClient, 'Demande de ticket refusée', 'Votre demande de ticket a été refusée.');
@@ -270,11 +362,11 @@ class TicketController
                     }
                 }
                 $notificationModel = new NotificationModel(Flight::db());
-                $notificationModel->sendNotificationToClient($id_client, 'Ticket numero: '. $ticketId . ' terminé');
+                $notificationModel->sendNotificationToClient($id_client, 'Ticket numero: ' . $ticketId . ' terminé');
             }
-            if($fk_statut == 6) {
+            if ($fk_statut == 6) {
                 $notificationModel = new NotificationModel(Flight::db());
-                $notificationModel->sendNotificationToClient($id_client, 'Ticket numero: '. $ticketId . ' annulé');
+                $notificationModel->sendNotificationToClient($id_client, 'Ticket numero: ' . $ticketId . ' annulé');
             }
             if (isset($result['error'])) {
                 echo json_encode(['success' => false, 'error' => $result['error']]);
@@ -296,7 +388,7 @@ class TicketController
                 echo json_encode(['success' => true]);
             }
             $notificationModel = new NotificationModel(Flight::db());
-            $notificationModel->sendNotificationToClient($id_client,'Votre ticket numero: '.$ticketId.' a été mis à jour avec succès en : '.Flight::get('statut')[$fk_statut]);
+            $notificationModel->sendNotificationToClient($id_client, 'Votre ticket numero: ' . $ticketId . ' a été mis à jour avec succès en : ' . Flight::get('statut')[$fk_statut]);
         }
 
 

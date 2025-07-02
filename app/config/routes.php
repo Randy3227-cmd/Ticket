@@ -65,3 +65,6 @@ $router->get('/admin/dashboard', [$dashboardController, 'showDashboard']);
 
 $router->get('/notification', [$notificationController, 'notification']);
 $router->get('/notification/supprimer', [$notificationController, 'supprimer']);
+
+
+$router->post('/admin/recherche', [$ticketController, 'findAllFiltered']);

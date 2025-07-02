@@ -13,8 +13,8 @@ class DolibarrModel
 
 
 
-    // private $apiKey = 'VpAJ7j10Q0KfmBqkqp05Q0xT39Ic5AzZ'; // Riana
-    private $apiKey = '3d8VLS2o0PLypI8OA9vkG0a1zY65Miwf'; // Randy
+    private $apiKey = 'VpAJ7j10Q0KfmBqkqp05Q0xT39Ic5AzZ'; // Riana
+    // private $apiKey = '3d8VLS2o0PLypI8OA9vkG0a1zY65Miwf'; // Randy
     // private $apiKey = 'el6cv75Sz0jSP3Gps9m4B07gfHEDF6TJ'; // Michou
 
     public function __construct()
@@ -175,6 +175,59 @@ class DolibarrModel
 
         return json_decode($response, true);
     }
+
+    public function findTickets(array $filters = []): array
+{
+    $allTickets = $this->findAllTickets();
+
+    if (isset($allTickets['error']) || empty($allTickets)) {
+        return $allTickets;
+    }
+
+    $filteredTickets = array_filter($allTickets, function ($ticket) use ($filters) {
+        foreach ($filters as $key => $value) {
+            // Ignorer les valeurs vides ou nulles
+            if ($value === '' || $value === null || (is_array($value) && empty($value))) {
+                continue;
+            }
+
+            // Cas spécial pour les filtres dans array_options
+            if ($key === 'array_options' && is_array($value)) {
+                foreach ($value as $optionKey => $optionValue) {
+                    // Ignorer les valeurs vides ou nulles dans array_options
+                    if ($optionValue === '' || $optionValue === null) {
+                        continue;
+                    }
+                    
+                    if (!isset($ticket['array_options'][$optionKey]) || $ticket['array_options'][$optionKey] != $optionValue) {
+                        return false;
+                    }
+                }
+            } else {
+                // Vérifier si le champ existe dans le ticket avant de comparer
+                if (!isset($ticket[$key])) {
+                    continue; // Ou return false selon votre logique métier
+                }
+                
+                // Comparaison flexible pour les chaînes (recherche partielle)
+                if (is_string($value) && is_string($ticket[$key])) {
+                    if (stripos($ticket[$key], $value) === false) {
+                        return false;
+                    }
+                } else {
+                    // Comparaison exacte pour les autres types
+                    if ($ticket[$key] != $value) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    });
+
+    return array_values($filteredTickets);
+}
+
 
     public function findTicketsByExternalUserId($externalUserId): array
     {
