@@ -143,67 +143,6 @@
             <li><a href="<?= BASE_URL ?>/admin/dashboard">🗃️ Dashboard</a></li>
         </ul>
     </nav>
-    <section class="search-form">
-    <form action="<?= BASE_URL ?>/admin/recherche" method="GET">
-        <div class="form-row">
-            <label for="sujet">Sujet :</label>
-            <input type="text" id="sujet" name="sujet">
-
-            <label for="message">Message :</label>
-            <input type="text" id="message" name="message">
-
-            <label for="priorite">Priorité :</label>
-            <select id="priorite" name="priorite">
-                <option value="">-- Toutes --</option>
-                <option value="1">Low</option>
-                <option value="2">Normal</option>
-                <option value="3">high</option>
-            </select>
-
-            <select id="type" name="type">
-                <option value="">-- Toutes --</option>
-                <option value="1">Commercial question</option>
-                <option value="2">Request for functionnal help</option>
-                <option value="3">Issue or bug</option>
-                <option value="4">Problem</option>
-                <option value="5">Change or enhancement request</option>
-                <option value="7">Other</option>
-            </select>
-
-            <label for="categorie">Catégorie :</label>
-            <input type="number" id="categorie" name="categorie">
-
-            <label for="client">Client :</label>
-            <select name="client" id="client">
-                <?php for ($i=0; $i < count($clients); $i++) { ?>
-                    <option value=<?= $clients[$i]['id_client'] ?>><?= $clients[$i]['nom_client'] ?></option>
-                <?php } ?>
-            </select>
-
-            <label for="agent">Agent responsable :</label>
-            <select name="agent" id="agent">
-                <?php for ($i=0; $i < count($agents); $i++) { ?>
-                    <option value=<?= $agents[$i]['id_agent'] ?>><?= $agents[$i]['nom_agent'] ?></option>
-                <?php } ?>
-            </select>
-
-            <label for="status">Status :</label>
-            <select id="status" name="status">
-                <option value="">-- Tous --</option>
-                <option value="0">non lu</option>
-                <option value="1">lu</option>
-                <option value="2">assigné</option>
-                <option value="3">en cours</option>
-                <option value="4">en attente de retour</option>
-                <option value="5">résolu</option>
-                <option value="6">abandonné</option>
-            </select>
-        </div>
-        <div class="form-submit">
-            <button type="submit">🔍 Rechercher</button>
-        </div>
-    </form>
-</section>
 
     <main>
         <?php

@@ -67,4 +67,4 @@ $router->get('/notification', [$notificationController, 'notification']);
 $router->get('/notification/supprimer', [$notificationController, 'supprimer']);
 
 
-$router->get('/admin/recherche', [$ticketController, 'findTickets']);
+$router->post('/admin/recherche', [$ticketController, 'findAllFiltered']);
